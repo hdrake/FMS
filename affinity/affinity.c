@@ -18,6 +18,13 @@
  **********************************************************************/
 #define _GNU_SOURCE
 
+#ifdef MACOS
+
+int get_cpu_affinity(void) { return -1; };
+void set_cpu_affinity( int cpu ) {};
+
+#else
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -58,7 +65,6 @@ int get_cpu_affinity(void)
   return -1;
 }
 
-int get_cpu_affinity_(void) { return get_cpu_affinity(); }      /* Fortran interface */
 
 
 /*
@@ -122,4 +128,7 @@ int set_cpu_affinity(int cpu)
   return 0;
 }
 
-int set_cpu_affinity_(int *cpu) { return set_cpu_affinity(*cpu); } /* Fortran interface */
+#endif
+
+int get_cpu_affinity_(void) { return get_cpu_affinity(); }      /* Fortran interface */
+void set_cpu_affinity_(int *cpu) { return set_cpu_affinity(*cpu); } /* Fortran interface */
